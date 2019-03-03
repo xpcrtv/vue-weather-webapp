@@ -1,6 +1,7 @@
 {
-  "name": "weather-vue-app",
+  "name": "weather-vue-pwa",
   "version": "0.1.0",
+  "description": "Weather PWA, created for learning purpose",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,7 +10,8 @@
   },
   "dependencies": {
     "register-service-worker": "^1.5.2",
-    "vue": "^2.6.6"
+    "vue": "^2.6.8",
+    "vue-dragscroll": "^1.8.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
@@ -18,9 +20,9 @@
     "@vue/cli-service": "^3.4.0",
     "@vue/eslint-config-airbnb": "^4.0.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.8.0",
+    "eslint": "^5.15.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.6.8"
   },
   "eslintConfig": {
     "root": true,
