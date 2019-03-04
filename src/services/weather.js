@@ -57,12 +57,11 @@ class Weather {
 
   async updateForecasts(coordinates) {
     Object.keys(this).forEach(key => localStorage.removeItem(key));
-    Promise.all([
+    return Promise.all([
       this.getHourlyForecast(coordinates),
       this.getDailyForecast(coordinates),
       this.getWeeklyForecast(coordinates),
     ]);
-    return this;
   }
 }
 
