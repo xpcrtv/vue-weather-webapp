@@ -35,7 +35,12 @@
       "plugin:vue/essential",
       "@vue/airbnb"
     ],
-    "rules": {},
+    "rules": {
+      "arrow-parens": [
+        2,
+        "always"
+      ]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
