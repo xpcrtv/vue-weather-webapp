@@ -5,4 +5,6 @@ module.exports = {
     themeColor: '#b7dcd5',
     msTileColor: '#b7dcd5',
   },
+
+  lintOnSave: false
 };
