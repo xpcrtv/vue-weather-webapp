@@ -1,11 +1,11 @@
 <template>
   <div class="app-header">
-    <button role="button" class="btn" @click="g">
+    <button role="button" class="btn" @click="getGeo">
       <span class="btn__icon">
         <img src="/img/icons/geolocation.svg">
       </span>
     </button>
-    <button role="button" class="btn"  @click="r">
+    <button role="button" class="btn"  @click="update">
       <span class="btn__icon">
         <img src="/img/icons/refresh.svg" alt>
       </span>
@@ -16,11 +16,14 @@
 <script>
 export default {
   methods: {
-    r() {
-      this.$emit('refresh');
+    update() {
+      this.$store.dispatch('updateTime');
+      this.$store.dispatch('updateForecast');
     },
-    g() {
-      this.$emit('geo');
+    async getGeo() {
+      await this.$store.dispatch('updateCoordsByDevice');
+      this.$store.dispatch('updateForecast')
+      this.$store.dispatch('updateTime');
     },
   },
 };

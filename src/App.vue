@@ -1,6 +1,6 @@
 <template>
   <div class="weather-app">
-    <app-header @refresh="refresh" @geo="getGeo"/>
+    <app-header/>
     <app-day-weather :weather="current" :updateTime="updateTime"/>
     <app-hours :weather="hourly"/>
     <app-week-forecast :weather="weekly"/>
@@ -39,15 +39,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch('initState');
-  },
-  methods: {
-    refresh() {
-      this.$store.dispatch('updateTime');
-      this.$store.dispatch('updateForecast');
-    },
-    getGeo() {
-      this.$store.dispatch('updateCoordsByDevice');
-    },
   },
 };
 </script>
