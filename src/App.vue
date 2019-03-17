@@ -1,72 +1,62 @@
 <template>
   <div class="weather-app">
-    <!-- <button @click="getGeo">get position</button> -->
-    <div class="city">{{current.city_name}}</div>
-    <div class="time">{{current.datetime}}</div>
-    <div class="temp">
-      <span class="temp_deg">
-        {{current.temp}}
-      </span>
-      <span class="temp_metric">°</span>
-    </div>
-    <div class="hours">
-      <ul class="hours_list" v-dragscroll>
-        <li class="hour" v-for="(hour, index) in hourly.data" :key="index">
-          <div class="hour_time">
-            {{new Date(hour.timestamp_local).getDate()}}
-            /
-            0{{new Date(hour.timestamp_local).getMonth() + 1 }}
-          </div>
-          <div class="hour_temp">{{Math.floor(hour.temp)}}</div>
-          <div class="hour_time">{{new Date(hour.timestamp_local).getHours()}}:00</div>
-        </li>
-      </ul>
-    </div>
+    <app-header @refresh="refresh" @geo="getGeo"/>
+    <app-day-weather :weather="current" :updateTime="updateTime"/>
+    <app-hours :weather="hourly"/>
+    <app-week-forecast :weather="weekly"/>
   </div>
 </template>
 
 <script>
-import { dragscroll } from 'vue-dragscroll';
-import Weather from './services/weather';
-import Geolocation from './services/geolocation';
+import AppHeader from './components/AppHeader.vue';
+import AppDayWeather from './components/AppDayWeather.vue';
+import AppHours from './components/AppHours.vue';
+import AppWeekForecast from './components/AppWeekForecast.vue';
 
-const weather = new Weather();
-const geolocation = new Geolocation();
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/en'
+dayjs.extend(LocalizedFormat)
+dayjs.extend(customParseFormat);
+dayjs.extend(relativeTime);
+dayjs.locale('en');
+
+
+import { mapState } from 'vuex';
 
 export default {
   name: 'app',
-  directives: {
-    dragscroll,
+  components: {
+    AppHeader,
+    AppDayWeather,
+    AppHours,
+    AppWeekForecast,
   },
-  data: () => ({
-    coords: {},
-    hourly: {},
-    current: {},
-    week: {},
-  }),
-  async mounted() {
-    const initialPosition = await geolocation.getCoordinatesByIp()
-      .then((coords) => {
-        this.coords = coords;
-        return this.coords;
-      });
-    this.hourly = await weather.getHourlyForecast(initialPosition);
-    this.current = await weather.getDailyForecast(initialPosition);
-    this.week = await weather.getWeeklyForecast(initialPosition);
+  computed: {
+    ...mapState(['updateTime', 'coords', 'current', 'hourly', 'weekly']),
+  },
+  mounted() {
+    this.$store.dispatch('initState');
   },
   methods: {
+    refresh() {
+      this.$store.dispatch('updateTime');
+      this.$store.dispatch('updateForecast');
+    },
     getGeo() {
-      geolocation.getCoordinatesByDevice().then((pos) => {
-        this.coords.latitude = pos.coords.latitude;
-        this.coords.longitude = pos.coords.longitude;
-        weather.updateForecasts(this.coords);
-      });
+      this.$store.dispatch('updateCoordsByDevice');
     },
   },
 };
 </script>
 
 <style>
+html {
+  -ms-overflow-style: none;
+  background-color: #fff;
+}
 body {
   font-family: 'Dosis', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -81,84 +71,65 @@ body {
   justify-content: center;
 }
 .weather-app {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  color: #fff;
   box-sizing: border-box;
-  padding: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 20px;
   width: 375px;
   height: 700px;
   border-radius: 30px;
-  background: rgb(224,167,161);
-  background: linear-gradient(0, rgba(183,220,213,1) 0%, rgba(224,167,161,1) 100%);
-  box-shadow: 0 10px 20px rgba(0,0,0,.30);
-  overflow: hidden;
+  background: rgb(224, 167, 161);
+  background: linear-gradient(to top, #b7dcd5 0%, #e0a7a1 100%);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  -webkit-overflow-scrolling: touch;
+  overflow: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none;
 }
-
-.temp {
-  color: #fff;
-  text-align: center;
-  width: 100%;
-}
-.temp_deg {
-  font-size: 9em;
-}
-
-.city {
-  text-align: center;
-  font-size: 3em;
-  font-weight: bold;
-  color: #DD564C;
-}
-
-.time {
-  text-align: center;
-  font-size: 1em;
-  font-weight: bold;
-  color: #DD564C;
-}
-
-.temp_metric {
-  display: inline-block;
-  margin-top: 20px;
-  vertical-align: top;
-  font-size: 5em
-}
-
-.hours {
-  position: relative;
-  padding: 0;
-  margin: 0;
-  color: #fff;
-  cursor: grab;
-}
-
-.hours_list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
-}
-
-.hour {
-  text-align: center;
-  min-width: 50px;
-}
-
-.hour_temp {
-  font-size: 2em;
-}
-
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 768px) {
   .weather-app {
     width: 100%;
     height: 100%;
     border-radius: 0;
-    box-shadow: 0 0 0 #fafafa;
   }
+}
+::-webkit-scrollbar {
+  display: none;
+}
+.app-title {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 2em;
+  font-weight: normal;
+}
+.btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  background: none;
+  border-radius: 50%;
+  width: 3em;
+  height: 3em;
+  border: 1px solid #fff;
+  padding: 5px;
+  cursor: pointer;
+  outline: none;
+  transition: 0.4s all;
+}
+.btn__icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+}
+.btn__icon img {
+  display: inline-block;
+  width: 100%;
 }
 </style>
