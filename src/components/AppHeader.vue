@@ -9,7 +9,6 @@
       <span class="btn__icon">
         <img src="/img/icons/refresh.svg" alt>
       </span>
-      <slot></slot>
     </button>
   </div>
 </template>
