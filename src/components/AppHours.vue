@@ -1,12 +1,11 @@
 <template>
-  <div class="hours-chart" style="text-align: center">
-    <h2>Hours Chart</h2>
+  <div class="hours-chart">
+    <h2 class="app-title">Hours Chart</h2>
 
     <div class="trend" v-dragscroll="true">
       <ul class="hours-list">
         <li class="hours-list__item" v-for="(hour, index) in hoursData" :key="index">
-          <!-- <div class="hours-list__day">{{ hour.ts }}</div> -->
-          <div class="hours-list__day">{{ Math.floor(hour.temp) }}</div>
+          <div class="hours-list__day">{{ Math.round(hour.temp) }} &deg;</div>
         </li>
       </ul>
       <trend
@@ -16,13 +15,12 @@
         smooth
         :gradient="['#fff']"
         :padding="30"
-        :width="720"
+        :width="780"
         :height="100"
       />
       <ul class="hours-list">
         <li class="hours-list__item" v-for="(hour, index) in hoursData" :key="index">
           <div class="hours-list__day hours-list__day--time">{{ formatedDay(hour.ts) }}</div>
-          <!-- <div class="hours-list__day">{{ hour.temp }}</div> -->
         </li>
       </ul>
     </div>
@@ -30,6 +28,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { dragscroll } from 'vue-dragscroll';
 import dayjs from 'dayjs';
 
@@ -37,22 +36,16 @@ export default {
   directives: {
     dragscroll,
   },
-  data: () => ({
-    hoursTemp: [0],
-    hoursData: [{ ts: 0, temp: 0 }],
-  }),
   props: {
     weather: {
-      type: Object,
+      type: Array,
     },
   },
-  watch: {
-    weather(value) {
-      this.hoursTemp = value.data
-        .filter((el, i) => i % 2 === 0)
-        .map((el) => el.temp);
-      this.hoursData = value.data.filter((el, i) => i % 2 === 0);
-    },
+  computed: {
+    ...mapGetters({
+      hoursData: 'getEvenHoursForecast',
+      hoursTemp: 'getHoursTemp',
+    }),
   },
   methods: {
     formatedDay(value) {
@@ -64,7 +57,7 @@ export default {
 
 <style>
 .hours-list {
-  width: 720px;
+  width: 780px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -72,7 +65,6 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  /* overflow: hidden; */
   cursor: grab;
 }
 
@@ -81,6 +73,7 @@ export default {
   width: 60px;
   font-size: 14px;
   font-weight: bold;
+  padding-left: 10px;
 }
 
 .hour_temp {
@@ -88,17 +81,17 @@ export default {
 }
 .trend {
   overflow: hidden;
+  padding-top: 10px;
   padding-bottom: 10px;
 }
 .chart {
-  background:
-  linear-gradient(
+  background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.6),
     rgba(255, 255, 255, 0) 1px
   );
   cursor: grab;
   background-size: 60px;
-  background-position: center center;
+  background-position: 30px center;
 }
 </style>
