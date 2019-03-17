@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import createPersistedState from 'vuex-persistedstate'
-
+import getCurrentPosition from './utils/getCurrentPosition.js'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -84,18 +84,7 @@ export default new Vuex.Store({
           commit('updateCoords', coords)
         })
     },
-    async updateCoordsByDevice({ dispatch, commit }) {
-      const getCurrentPosition = () => {
-        if (navigator.geolocation) {
-          return new Promise(
-            (resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject)
-          )
-        } else {
-          return new Promise(
-            resolve => resolve({})
-          )
-        }
-      };
+    async updateCoordsByDevice({ commit }) {
       await getCurrentPosition().then((res) => {
         const { coords } = res;
         const coordinates = {
