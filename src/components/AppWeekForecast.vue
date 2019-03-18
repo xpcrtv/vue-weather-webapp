@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import getWeatherIcon from '../utils/weathericons.js';
 import dayjs from 'dayjs';
+import getWeatherIcon from '../utils/weatherIcons';
 
 export default {
   props: {

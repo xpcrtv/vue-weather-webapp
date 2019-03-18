@@ -6,5 +6,5 @@ module.exports = {
     msTileColor: '#b7dcd5',
   },
 
-  lintOnSave: false
+  lintOnSave: false,
 };

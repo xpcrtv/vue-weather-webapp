@@ -43,8 +43,6 @@
 </template>
 
 <script>
-import getWeatherIcon from "../utils/weathericons.js";
-
 import dayjs from 'dayjs';
 
 const timeOffset = dayjs().utcOffset();
@@ -74,9 +72,6 @@ export default {
       return dayjs(this.updateTime).fromNow();
     },
   },
-  methods: {
-    getWeatherIcon
-  }
 };
 </script>
 

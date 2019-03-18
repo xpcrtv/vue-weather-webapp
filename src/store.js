@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import createPersistedState from 'vuex-persistedstate'
-import getCurrentPosition from './utils/getCurrentPosition.js'
+import createPersistedState from 'vuex-persistedstate';
+import getCurrentPosition from './utils/getCurrentPosition';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -26,22 +27,22 @@ export default new Vuex.Store({
       sunrise: 0,
       sunset: 0,
       weather: {
-        description: ''
-      }
+        description: '',
+      },
     },
     weekly: [{
-        ts: 0,
-        sunrise_ts: 0,
-        sunset_ts: 0,
-        wind_spd: 0,
-        pop: 0,
-        max_temp: 0,
-        min_temp: 0,
-        weather: {
-          icon: '',
-        },
+      ts: 0,
+      sunrise_ts: 0,
+      sunset_ts: 0,
+      wind_spd: 0,
+      pop: 0,
+      max_temp: 0,
+      min_temp: 0,
+      weather: {
+        icon: '',
       },
-    ]
+    },
+    ],
   },
   mutations: {
     updateTime(state, time) {
@@ -79,10 +80,10 @@ export default new Vuex.Store({
           const { data } = res;
           const coords = {
             latitude: Number(data.latitude),
-            longitude: Number(data.longitude)
-          }
-          commit('updateCoords', coords)
-        })
+            longitude: Number(data.longitude),
+          };
+          commit('updateCoords', coords);
+        });
     },
     async updateCoordsByDevice({ commit }) {
       await getCurrentPosition().then((res) => {
@@ -92,7 +93,7 @@ export default new Vuex.Store({
           longitude: coords.longitude,
         };
         commit('updateCoords', coordinates);
-      })
+      });
     },
     updateForecast({ dispatch }) {
       dispatch('updateCurrentForecast');
@@ -134,7 +135,7 @@ export default new Vuex.Store({
           const { data } = res.data;
           commit('updateHourlyForecast', data);
         });
-    }
+    },
   },
   getters: {
     getEvenHoursForecast(state) {
@@ -143,8 +144,8 @@ export default new Vuex.Store({
     getHoursTemp(state) {
       return state.hourly
         .filter((_, index) => index % 2 === 0)
-        .map(hour => hour.temp);
-    }
+        .map((hour) => hour.temp);
+    },
   },
   plugins: [createPersistedState()],
 });

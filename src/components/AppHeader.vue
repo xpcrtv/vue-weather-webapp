@@ -22,7 +22,7 @@ export default {
     },
     async getGeo() {
       await this.$store.dispatch('updateCoordsByDevice');
-      this.$store.dispatch('updateForecast')
+      this.$store.dispatch('updateForecast');
       this.$store.dispatch('updateTime');
     },
   },

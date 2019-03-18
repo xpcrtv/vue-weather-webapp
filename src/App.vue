@@ -8,23 +8,24 @@
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue';
-import AppDayWeather from './components/AppDayWeather.vue';
-import AppHours from './components/AppHours.vue';
-import AppWeekForecast from './components/AppWeekForecast.vue';
 
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat'
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import 'dayjs/locale/en'
-dayjs.extend(LocalizedFormat)
-dayjs.extend(customParseFormat);
-dayjs.extend(relativeTime);
-dayjs.locale('en');
+import 'dayjs/locale/en';
 
 
 import { mapState } from 'vuex';
+import AppWeekForecast from './components/AppWeekForecast.vue';
+import AppHours from './components/AppHours.vue';
+import AppDayWeather from './components/AppDayWeather.vue';
+import AppHeader from './components/AppHeader.vue';
+
+dayjs.extend(LocalizedFormat);
+dayjs.extend(customParseFormat);
+dayjs.extend(relativeTime);
+dayjs.locale('en');
 
 export default {
   name: 'app',
