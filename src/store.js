@@ -6,6 +6,9 @@ import getCurrentPosition from './utils/getCurrentPosition';
 
 Vue.use(Vuex);
 
+const baseUrl = process.env.VUE_APP_WEATHER_API_URL;
+const apiKey = process.env.VUE_APP_WEATHER_API;
+
 export default new Vuex.Store({
   state: {
     isLoading: false,
@@ -101,8 +104,6 @@ export default new Vuex.Store({
       dispatch('updateWeeklyForecast');
     },
     updateCurrentForecast({ state, commit }) {
-      const baseUrl = 'https://api.weatherbit.io/v2.0/';
-      const apiKey = process.env.VUE_APP_WEATHER_API;
       const lat = state.coords.latitude.toFixed(2);
       const lon = state.coords.longitude.toFixed(2);
       const resUrl = `${baseUrl}current?lat=${lat}&lon=${lon}&key=${apiKey}`;
@@ -113,8 +114,6 @@ export default new Vuex.Store({
         });
     },
     updateWeeklyForecast({ state, commit }) {
-      const baseUrl = 'https://api.weatherbit.io/v2.0/';
-      const apiKey = process.env.VUE_APP_WEATHER_API;
       const lat = state.coords.latitude.toFixed(2);
       const lon = state.coords.longitude.toFixed(2);
       const resUrl = `${baseUrl}/forecast/daily?lat=${lat}&lon=${lon}&days=7&key=${apiKey}`;
@@ -125,8 +124,6 @@ export default new Vuex.Store({
         });
     },
     updateHourlyForecast({ state, commit }) {
-      const baseUrl = 'https://api.weatherbit.io/v2.0/';
-      const apiKey = process.env.VUE_APP_WEATHER_API;
       const lat = state.coords.latitude.toFixed(2);
       const lon = state.coords.longitude.toFixed(2);
       const resUrl = `${baseUrl}/forecast/hourly?lat=${lat}&lon=${lon}&hours=26&key=${apiKey}`;
