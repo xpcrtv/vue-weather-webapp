@@ -97,20 +97,53 @@ body {
   font-weight: normal;
 }
 .btn {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  background: none;
-  border-radius: 50%;
-  width: 3em;
-  height: 3em;
-  border: 1px solid #fff;
-  padding: 5px;
-  cursor: pointer;
+  text-decoration: none;
   outline: none;
-  transition: 0.4s all;
+  display: inline-block;
+  padding: 10px;
+  position: relative;
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  transition: .4s;
+  cursor: pointer;
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(0,0,0,0);
+  border-radius: 50%;
+  transition: .4s;
+}
+.btn:hover .btn__icon--scale img{
+  animation: 1s scale linear infinite;
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.btn:hover .btn__icon--rotate img{
+  transform: rotate(-180deg);
+}
+.btn:active:after,
+.btn:hover:after {
+  border-color: rgba(255, 255, 255, 0.753);
+  transform: scale(1.3);
 }
 .btn__icon {
   display: flex;
@@ -123,5 +156,6 @@ body {
 .btn__icon img {
   display: inline-block;
   width: 100%;
+  transition: 0.4s;
 }
 </style>

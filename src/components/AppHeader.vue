@@ -1,12 +1,12 @@
 <template>
   <div class="app-header">
     <button role="button" class="btn" @click="getGeo">
-      <span class="btn__icon">
+      <span class="btn__icon btn__icon--scale">
         <img src="/img/icons/geolocation.svg">
       </span>
     </button>
     <button role="button" class="btn"  @click="update">
-      <span class="btn__icon">
+      <span class="btn__icon btn__icon--rotate">
         <img src="/img/icons/refresh.svg" alt>
       </span>
     </button>
