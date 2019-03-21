@@ -2,7 +2,7 @@
   <div class="hours-chart">
     <h2 class="app-title">Hours Chart</h2>
 
-    <div class="trend" v-dragscroll="true">
+    <div class="trend" v-dragscroll="isDraggable">
       <ul class="hours-list">
         <li class="hours-list__item" v-for="(hour, index) in hoursData" :key="index">
           <div class="hours-list__day">{{ Math.round(hour.temp) }} &deg;</div>
@@ -46,6 +46,9 @@ export default {
       hoursData: 'getEvenHoursForecast',
       hoursTemp: 'getHoursTemp',
     }),
+    isDraggable() {
+      return window.matchMedia('(min-width: 768px)').matches;
+    },
   },
   methods: {
     formatedDay(value) {
@@ -81,8 +84,14 @@ export default {
 }
 .trend {
   overflow: hidden;
+  overflow-x: scroll;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+@media screen and (max-width: 768px) {
+  .trend {
+    overflow-x: scroll;
+  }
 }
 .chart {
   background: linear-gradient(
