@@ -7,7 +7,7 @@
         <span class="day-weather__icon">
           <img src="/img/weather-icons/wind_spd.svg" width="30" alt>
         </span>
-        <span class="day-weather__value">{{ weather.wind_spd }} m/s</span>
+        <span class="day-weather__value">{{ Math.round(weather.wind_spd) }} m/s</span>
       </div>
       <div class="day-weather__item">
         <span class="day-weather__icon">
