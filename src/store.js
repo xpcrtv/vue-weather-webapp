@@ -109,7 +109,7 @@ export default new Vuex.Store({
       const queries = buildQueries({
         lat: state.coords.latitude.toFixed(2),
         lon: state.coords.longitude.toFixed(2),
-        key: apiKey
+        key: apiKey,
       });
       axios.get(`${baseUrl}/current${queries}`)
         .then((res) => {
@@ -135,7 +135,7 @@ export default new Vuex.Store({
         lat: state.coords.latitude.toFixed(2),
         lon: state.coords.longitude.toFixed(2),
         hours: 26,
-        key: apiKey
+        key: apiKey,
       });
       axios.get(`${baseUrl}/forecast/hourly${queries}`)
         .then((res) => {
