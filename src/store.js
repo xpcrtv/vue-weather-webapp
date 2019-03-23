@@ -121,13 +121,13 @@ export default new Vuex.Store({
       const queries = buildQueries({
         lat: state.coords.latitude.toFixed(2),
         lon: state.coords.longitude.toFixed(2),
-        days: 7,
-        key: apiKey
+        days: 8,
+        key: apiKey,
       });
       axios.get(`${baseUrl}/forecast/daily${queries}`)
         .then((res) => {
           const { data } = res.data;
-          commit('updateWeeklyForecast', data);
+          commit('updateWeeklyForecast', data.filter((_, i) => i !== 0));
         });
     },
     updateHourlyForecast({ state, commit }) {
