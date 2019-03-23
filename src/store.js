@@ -3,6 +3,8 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import createPersistedState from 'vuex-persistedstate';
 import getCurrentPosition from './utils/getCurrentPosition';
+import buildQueries from './utils/buildQueries';
+
 
 Vue.use(Vuex);
 
@@ -104,30 +106,38 @@ export default new Vuex.Store({
       dispatch('updateWeeklyForecast');
     },
     updateCurrentForecast({ state, commit }) {
-      const lat = state.coords.latitude.toFixed(2);
-      const lon = state.coords.longitude.toFixed(2);
-      const resUrl = `${baseUrl}current?lat=${lat}&lon=${lon}&key=${apiKey}`;
-      axios.get(resUrl)
+      const queries = buildQueries({
+        lat: state.coords.latitude.toFixed(2),
+        lon: state.coords.longitude.toFixed(2),
+        key: apiKey
+      });
+      axios.get(`${baseUrl}/current${queries}`)
         .then((res) => {
           const { data } = res.data;
           commit('updateCurrentForecast', data[0]);
         });
     },
     updateWeeklyForecast({ state, commit }) {
-      const lat = state.coords.latitude.toFixed(2);
-      const lon = state.coords.longitude.toFixed(2);
-      const resUrl = `${baseUrl}/forecast/daily?lat=${lat}&lon=${lon}&days=7&key=${apiKey}`;
-      axios.get(resUrl)
+      const queries = buildQueries({
+        lat: state.coords.latitude.toFixed(2),
+        lon: state.coords.longitude.toFixed(2),
+        days: 7,
+        key: apiKey
+      });
+      axios.get(`${baseUrl}/forecast/daily${queries}`)
         .then((res) => {
           const { data } = res.data;
           commit('updateWeeklyForecast', data);
         });
     },
     updateHourlyForecast({ state, commit }) {
-      const lat = state.coords.latitude.toFixed(2);
-      const lon = state.coords.longitude.toFixed(2);
-      const resUrl = `${baseUrl}/forecast/hourly?lat=${lat}&lon=${lon}&hours=26&key=${apiKey}`;
-      axios.get(resUrl)
+      const queries = buildQueries({
+        lat: state.coords.latitude.toFixed(2),
+        lon: state.coords.longitude.toFixed(2),
+        hours: 26,
+        key: apiKey
+      });
+      axios.get(`${baseUrl}/forecast/hourly${queries}`)
         .then((res) => {
           const { data } = res.data;
           commit('updateHourlyForecast', data);
