@@ -1,6 +1,6 @@
 {
   "name": "Vue weather PWA",
-  "short_name": "vue-weather-pwa",
+  "short_name": "WeatherPWA",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
@@ -46,5 +46,5 @@
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#FFFFFF",
-  "theme_color": "#4DBA87"
+  "theme_color": "#fafafa"
 }
