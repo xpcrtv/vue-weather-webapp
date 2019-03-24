@@ -4,6 +4,7 @@
     <app-day-weather :weather="current" :updateTime="updateTime"/>
     <app-hours :weather="hourly"/>
     <app-week-forecast :weather="weekly"/>
+    <app-error-message />
   </div>
 </template>
 
@@ -21,6 +22,7 @@ import AppWeekForecast from './components/AppWeekForecast.vue';
 import AppHours from './components/AppHours.vue';
 import AppDayWeather from './components/AppDayWeather.vue';
 import AppHeader from './components/AppHeader.vue';
+import AppErrorMessage from './components/AppErrorMessage.vue';
 
 dayjs.extend(LocalizedFormat);
 dayjs.extend(customParseFormat);
@@ -34,13 +36,14 @@ export default {
     AppDayWeather,
     AppHours,
     AppWeekForecast,
+    AppErrorMessage,
   },
   computed: {
     ...mapState(['updateTime', 'coords', 'current', 'hourly', 'weekly']),
     daytime() {
       const hour = new Date().getHours();
-      return (hour > 6 && hour < 20) ? 'weather-app--day': 'weather-app--night';
-    }
+      return (hour > 6 && hour < 20) ? 'weather-app--day' : 'weather-app--night';
+    },
   },
   mounted() {
     this.$store.dispatch('initState');
@@ -67,6 +70,7 @@ body {
   justify-content: center;
 }
 .weather-app {
+  position: relative;
   color: #fff;
   box-sizing: border-box;
   padding-top: 10px;

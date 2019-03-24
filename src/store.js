@@ -13,7 +13,8 @@ const apiKey = process.env.VUE_APP_WEATHER_API;
 
 export default new Vuex.Store({
   state: {
-    isLoading: false,
+    errorState: false,
+    errorMessage: '',
     updateTime: 0,
     coords: {
       latitude: 0,
@@ -65,22 +66,26 @@ export default new Vuex.Store({
     updateHourlyForecast(state, forecast) {
       state.hourly = forecast;
     },
+    setErrorState(state, bool) {
+      state.errorState = bool;
+    },
+    setErrorMessage(state, message) {
+      state.errorMessage = message;
+    },
   },
   actions: {
-    async initState({ dispatch }) {
+    initState({ dispatch }) {
       const storageData = JSON.parse(localStorage.getItem('vuex'));
       if (!storageData || storageData.updateTime === 0) {
-        await dispatch('updateCoordsByIp');
-        dispatch('updateForecast');
-        dispatch('updateTime');
+        dispatch('updateForecastByIpCoords');
       }
     },
     updateTime({ commit }) {
       const currentTime = new Date().getTime();
       commit('updateTime', currentTime);
     },
-    async updateCoordsByIp({ commit }) {
-      await axios.get('/mocks/geo.json')
+    updateForecastByIpCoords({ dispatch, commit }) {
+      axios.get('/mocks/geo.json')
         .then((res) => {
           const { data } = res;
           const coords = {
@@ -88,17 +93,32 @@ export default new Vuex.Store({
             longitude: Number(data.longitude),
           };
           commit('updateCoords', coords);
+        })
+        .then(() => {
+          dispatch('updateForecast');
+          dispatch('updateTime');
+        }).catch((err) => {
+          commit('setErrorState', true);
+          commit('setErrorMessage', err.message);
         });
     },
-    async updateCoordsByDevice({ commit }) {
-      await getCurrentPosition().then((res) => {
+    updateForecastByDeviceCoords({ commit, dispatch }) {
+      getCurrentPosition().then((res) => {
         const { coords } = res;
         const coordinates = {
           latitude: coords.latitude,
           longitude: coords.longitude,
         };
         commit('updateCoords', coordinates);
-      });
+      })
+        .then(() => {
+          dispatch('updateForecast');
+          dispatch('updateTime');
+        })
+        .catch((err) => {
+          commit('setErrorState', true);
+          commit('setErrorMessage', err.message);
+        });
     },
     updateForecast({ dispatch }) {
       dispatch('updateCurrentForecast');
@@ -115,6 +135,9 @@ export default new Vuex.Store({
         .then((res) => {
           const { data } = res.data;
           commit('updateCurrentForecast', data[0]);
+        }).catch((err) => {
+          commit('setErrorState', true);
+          commit('setErrorMessage', err.message);
         });
     },
     updateWeeklyForecast({ state, commit }) {
@@ -128,6 +151,9 @@ export default new Vuex.Store({
         .then((res) => {
           const { data } = res.data;
           commit('updateWeeklyForecast', data.filter((_, i) => i !== 0));
+        }).catch((err) => {
+          commit('setErrorState', true);
+          commit('setErrorMessage', err.message);
         });
     },
     updateHourlyForecast({ state, commit }) {
@@ -141,6 +167,9 @@ export default new Vuex.Store({
         .then((res) => {
           const { data } = res.data;
           commit('updateHourlyForecast', data);
+        }).catch((err) => {
+          commit('setErrorState', true);
+          commit('setErrorMessage', err.message);
         });
     },
   },
