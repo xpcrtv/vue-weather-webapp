@@ -9,6 +9,7 @@ import buildQueries from './utils/buildQueries';
 Vue.use(Vuex);
 
 const baseUrl = process.env.VUE_APP_WEATHER_API_URL;
+const baseGeoUrl = process.env.VUE_APP_GEO_API_URL;
 const apiKey = process.env.VUE_APP_WEATHER_API;
 
 export default new Vuex.Store({
@@ -85,7 +86,7 @@ export default new Vuex.Store({
       commit('updateTime', currentTime);
     },
     updateForecastByIpCoords({ dispatch, commit }) {
-      axios.get('/mocks/geo.json')
+      axios.get(baseGeoUrl)
         .then((res) => {
           const { data } = res;
           const coords = {
