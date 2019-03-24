@@ -1,5 +1,5 @@
 <template>
-  <div class="weather-app">
+  <div :class="`weather-app ${daytime}`">
     <app-header/>
     <app-day-weather :weather="current" :updateTime="updateTime"/>
     <app-hours :weather="hourly"/>
@@ -37,6 +37,10 @@ export default {
   },
   computed: {
     ...mapState(['updateTime', 'coords', 'current', 'hourly', 'weekly']),
+    daytime() {
+      const hour = new Date().getHours();
+      return (hour > 6 && hour < 20) ? 'weather-app--day': 'weather-app--night';
+    }
   },
   mounted() {
     this.$store.dispatch('initState');
@@ -72,13 +76,19 @@ body {
   width: 375px;
   height: 700px;
   border-radius: 30px;
-  background: rgb(224, 167, 161);
-  background: linear-gradient(to top, #b7dcd5 0%, #e0a7a1 100%);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   -webkit-overflow-scrolling: touch;
   overflow: scroll;
   overflow-x: hidden;
   scrollbar-width: none;
+}
+.weather-app--night {
+  background: rgb(224, 167, 161);
+  background: linear-gradient(to top, #b7dcd5 0%, #191919 100%);
+}
+.weather-app--day {
+  background: rgb(224, 167, 161);
+  background: linear-gradient(to top, #b7dcd5 0%, #e0a7a1 100%);
 }
 @media screen and (max-width: 768px) {
   .weather-app {
