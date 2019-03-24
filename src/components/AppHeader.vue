@@ -20,10 +20,8 @@ export default {
       this.$store.dispatch('updateTime');
       this.$store.dispatch('updateForecast');
     },
-    async getGeo() {
-      await this.$store.dispatch('updateCoordsByDevice');
-      this.$store.dispatch('updateForecast');
-      this.$store.dispatch('updateTime');
+    getGeo() {
+      this.$store.dispatch('updateForecastByDeviceCoords');
     },
   },
 };
