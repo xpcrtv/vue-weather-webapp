@@ -5,7 +5,7 @@
       role="button"
       aria-label="Close erroe message"
       class="error-message__close"
-      click="closeError"
+      @click="closeError"
     ></button>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default {
   background-color: #dd564c;
   border-radius: 30px;
   padding: 12px 30px;
-  transform: translateY(-60px);
+  transform: translateY(-100px);
   transition: transform 0.3s;
 }
 .error-message__text {
