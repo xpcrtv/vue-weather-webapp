@@ -3,7 +3,7 @@ module.exports = {
     name: 'Weather Vue App',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
-    themeColor: '#e0a7a1',
+    themeColor: '#fafafa',
     msTileColor: '#b7dcd5',
     workboxPluginMode: 'GenerateSW',
     iconPaths: {
