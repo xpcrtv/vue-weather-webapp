@@ -4,18 +4,16 @@
     <app-day-weather :weather="current" :updateTime="updateTime"/>
     <app-hours :weather="hourly"/>
     <app-week-forecast :weather="weekly"/>
-    <app-error-message />
+    <app-error-message/>
   </div>
 </template>
 
 <script>
-
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/en';
-
 
 import { mapState } from 'vuex';
 import AppWeekForecast from './components/AppWeekForecast.vue';
@@ -42,7 +40,7 @@ export default {
     ...mapState(['updateTime', 'coords', 'current', 'hourly', 'weekly']),
     daytime() {
       const hour = new Date().getHours();
-      return (hour > 6 && hour < 20) ? 'weather-app--day' : 'weather-app--night';
+      return hour > 6 && hour < 20 ? 'weather-app--day' : 'weather-app--night';
     },
   },
   mounted() {
@@ -86,6 +84,37 @@ body {
   overflow-x: hidden;
   scrollbar-width: none;
 }
+.weather-app > :nth-child(-n + 4) {
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+}
+.weather-app > :nth-child(1) {
+  animation-delay: 0s;
+}
+
+.weather-app > :nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.weather-app > :nth-child(3) {
+  animation-delay: 0.8s;
+}
+
+.weather-app > :nth-child(4) {
+  animation-delay: 1.2s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .weather-app--night {
   background: rgb(224, 167, 161);
   background: linear-gradient(to top, #b7dcd5 0%, #191919 100%);
@@ -121,21 +150,21 @@ body {
   border-radius: 50%;
   color: #ffffff;
   font-family: 'Montserrat', sans-serif;
-  transition: .4s;
+  transition: 0.4s;
   cursor: pointer;
 }
 .btn::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  border: 1px solid rgba(0,0,0,0);
+  border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 50%;
-  transition: .4s;
+  transition: 0.4s;
 }
-.btn:hover .btn__icon--scale img{
+.btn:hover .btn__icon--scale img {
   animation: 1s scale linear infinite;
 }
 
@@ -151,7 +180,7 @@ body {
   }
 }
 
-.btn:hover .btn__icon--rotate img{
+.btn:hover .btn__icon--rotate img {
   transform: rotate(-180deg);
 }
 .btn:active:after,
