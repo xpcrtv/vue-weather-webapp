@@ -1,6 +1,6 @@
 {
   "name": "weather-vue-pwa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Weather PWA, created for learning purpose",
   "author": "xpcrtv",
@@ -31,36 +31,6 @@
     "eslint": "^5.15.3",
     "eslint-plugin-vue": "^5.0.0",
     "vue-template-compiler": "^2.6.10"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/airbnb"
-    ],
-    "rules": {
-      "arrow-parens": [
-        2,
-        "always"
-      ],
-      "no-param-reassign": [
-        2,
-        {
-          "props": false
-        }
-      ]
-    },
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
   },
   "browserslist": [
     "> 1%",

@@ -13,9 +13,7 @@ module.exports = {
       appleTouchIcon: 'img/icons/apple-touch-icon.png',
     },
     workboxOptions: {
-      exclude: [
-        /\.map$/,
-      ],
+      exclude: [/\.map$/],
     },
   },
   lintOnSave: false,
