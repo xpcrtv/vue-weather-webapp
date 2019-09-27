@@ -27,10 +27,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import dateService from '@/services/date';
+import trend from 'vuetrend';
 import { dragscroll } from 'vue-dragscroll';
 
 export default {
+  components: {
+    trend,
+  },
   directives: {
     dragscroll,
   },
