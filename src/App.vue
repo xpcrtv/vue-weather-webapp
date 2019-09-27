@@ -26,7 +26,7 @@ export default {
     AppErrorMessage,
   },
   computed: {
-    ...mapState(['updateTime', 'coords', 'current', 'hourly', 'weekly']),
+    ...mapState(['updateTime', 'current', 'hourly', 'weekly']),
     daytime() {
       const hour = new Date().getHours();
       return hour > 6 && hour < 20 ? 'weather-app--day' : 'weather-app--night';
