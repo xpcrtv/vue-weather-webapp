@@ -99,7 +99,7 @@ const ICONS_CODES = [
 
 const getIconFilename = (code) => ICONS_CODES.find((iconItem) => iconItem.codes.includes(code));
 
-export default (code = 'c01d') => {
+export default (code) => {
   const { filename } = getIconFilename(code);
   const iconPath = `${ICONS_DIR}/${filename}`;
   return iconPath;
