@@ -16,12 +16,24 @@
 <script>
 export default {
   methods: {
-    update() {
+    async update() {
+      try {
+        await this.$store.dispatch('updateForecast');
+      } catch (e) {
+        this.$store.commit('setErrorState', true);
+        this.$store.commit('setErrorMessage', e);
+        this.$store.commit('setLoadingState', false);
+      }
       this.$store.dispatch('updateTime');
-      this.$store.dispatch('updateForecast');
     },
-    getGeo() {
-      this.$store.dispatch('updateForecastByDeviceCoords');
+    async getGeo() {
+      try {
+        await this.$store.dispatch('updateCoordsByDevice');
+      } catch (e) {
+        this.$store.commit('setErrorState', true);
+        this.$store.commit('setErrorMessage', e.message);
+      }
+      this.update();
     },
   },
 };
