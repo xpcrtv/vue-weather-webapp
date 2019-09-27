@@ -43,11 +43,13 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
-
-const timeOffset = dayjs().utcOffset();
+import { VTooltip } from 'v-tooltip';
+import dateService from '@/services/date';
 
 export default {
+  directives: {
+    tooltip: VTooltip,
+  },
   props: {
     updateTime: {
       type: Number,
@@ -59,17 +61,20 @@ export default {
   },
   computed: {
     formatedSunriseTime() {
-      return dayjs(this.weather.sunrise, 'HH:mm')
-        .add(timeOffset, 'minutes')
-        .format('LT');
+      return this.fromatSunriseAndSunsetTime(this.weather.sunrise);
     },
     formatedSunsetTime() {
-      return dayjs(this.weather.sunset, 'HH:mm')
-        .add(timeOffset, 'minutes')
-        .format('LT');
+      return this.fromatSunriseAndSunsetTime(this.weather.sunset);
     },
     formatedUpdateTime() {
-      return dayjs(this.updateTime).fromNow();
+      return dateService.getTimeFromNow(this.updateTime);
+    },
+  },
+  methods: {
+    fromatSunriseAndSunsetTime(time) {
+      const parsedTime = dateService.parseDateWithTemlate(time);
+      const timeWithOffset = dateService.getTimeWithOffset(parsedTime);
+      return dateService.formatDate(timeWithOffset, 'HH:mm');
     },
   },
 };

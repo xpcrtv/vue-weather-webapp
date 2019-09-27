@@ -20,7 +20,7 @@
       />
       <ul class="hours-list">
         <li class="hours-list__item" v-for="(hour, index) in hoursData" :key="index">
-          <div class="hours-list__day hours-list__day--time">{{ formatedDay(hour.ts) }}</div>
+          <div class="hours-list__day hours-list__day--time">{{ hour.ts }}</div>
         </li>
       </ul>
     </div>
@@ -30,7 +30,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import { dragscroll } from 'vue-dragscroll';
-import dayjs from 'dayjs';
 
 export default {
   directives: {

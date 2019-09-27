@@ -72,10 +72,9 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
 import { VTooltip } from 'v-tooltip';
-import getWeatherIcon from '../utils/weatherIcons';
-
+import getWeatherIcon from '@/utils/weathericons';
+import dateService from '@/services/date';
 export default {
   directives: {
     tooltip: VTooltip,
@@ -91,13 +90,13 @@ export default {
   methods: {
     getWeatherIcon,
     formatToDayOfWeek(value) {
-      return dayjs(value * 1000).format('dddd');
+      return dateService.formatDate(value * 1000, 'dddd');
     },
     formatToDayAndMonth(value) {
-      return dayjs(value * 1000).format('DD/MM');
+      return dateService.formatDate(value * 1000, 'DD/MM');
     },
     formatToLocalTime(value) {
-      return dayjs(value * 1000).format('LT');
+      return dateService.formatDate(value * 1000, 'LT');
     },
   },
 };
