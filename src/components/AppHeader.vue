@@ -2,12 +2,12 @@
   <div class="app-header">
     <button role="button" aria-label="Get geolocation" class="btn" @click="getGeo">
       <span class="btn__icon btn__icon--scale">
-        <img src="/img/icons/geolocation.svg" aria-hidden="true">
+        <img src="/img/icons/geolocation.svg" aria-hidden="true" />
       </span>
     </button>
-    <button role="button" aria-label="Update weather" class="btn"  @click="update">
+    <button role="button" aria-label="Update weather" class="btn" @click="update">
       <span class="btn__icon btn__icon--rotate">
-        <img src="/img/icons/refresh.svg" aria-hidden="true">
+        <img src="/img/icons/refresh.svg" aria-hidden="true" />
       </span>
     </button>
   </div>

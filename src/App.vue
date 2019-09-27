@@ -1,10 +1,10 @@
 <template>
   <div :class="`weather-app ${daytime}`">
-    <app-header/>
-    <app-day-weather :weather="current" :updateTime="updateTime"/>
-    <app-hours :weather="hourly"/>
-    <app-week-forecast :weather="weekly"/>
-    <app-error-message/>
+    <app-header />
+    <app-day-weather :weather="current" :updateTime="updateTime" />
+    <app-hours :weather="hourly" />
+    <app-week-forecast :weather="weekly" />
+    <app-error-message />
   </div>
 </template>
 

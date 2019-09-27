@@ -14,18 +14,18 @@
             width="50"
             :alt="day.weather.description"
             slot="reference"
-          >
+          />
         </div>
         <div class="weekly-info">
           <div class="weekly-info__item">
             <div
               class="weekly-info__value"
-              v-tooltip.top-center="{content: 'Minimum temp', trigger: 'click'}"
+              v-tooltip.top-center="{content: 'Minimum temp'}"
             >{{Math.round(day.min_temp)}} &deg;</div>
           </div>
           <div class="weekly-info__item">
             <div class="weekly-info__icon">
-              <img src="/img/weather-icons/drops.svg" alt>
+              <img src="/img/weather-icons/drops.svg" alt />
             </div>
             <div
               class="weekly-info__value"
@@ -34,7 +34,7 @@
           </div>
           <div class="weekly-info__item">
             <div class="weekly-info__icon">
-              <img src="/img/weather-icons/wind.svg" alt>
+              <img src="/img/weather-icons/wind.svg" alt />
             </div>
             <div
               class="weekly-info__value"
@@ -49,7 +49,7 @@
           </div>
           <div class="weekly-info__item">
             <div class="weekly-info__icon">
-              <img src="/img/weather-icons/sunrise.svg" alt>
+              <img src="/img/weather-icons/sunrise.svg" alt />
             </div>
             <div
               class="weekly-info__value"
@@ -58,7 +58,7 @@
           </div>
           <div class="weekly-info__item">
             <div class="weekly-info__icon">
-              <img src="/img/weather-icons/sunset.svg" alt>
+              <img src="/img/weather-icons/sunset.svg" alt />
             </div>
             <div
               class="weekly-info__value"
@@ -155,6 +155,7 @@ export default {
 .weekly-info__value {
   -webkit-tap-highlight-color: transparent;
 }
+
 .tooltip {
   display: block !important;
   z-index: 10000;

@@ -1,7 +1,6 @@
 <template>
   <div class="hours-chart">
     <h2 class="app-title">Hours Chart</h2>
-
     <div class="trend" v-dragscroll="isDraggable">
       <ul class="hours-list">
         <li class="hours-list__item" v-for="(hour, index) in hoursData" :key="index">

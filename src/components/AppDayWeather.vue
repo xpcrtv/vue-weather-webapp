@@ -3,38 +3,38 @@
     <div class="day-weather__city-name">{{ weather.city_name }}</div>
     <div class="day-weather__update-time">last update: {{ formatedUpdateTime }}</div>
     <div class="day-weather__indicators">
-      <div class="day-weather__item">
+      <div class="day-weather__item" v-tooltip.top-center="{content: 'Wind Speed'}">
         <span class="day-weather__icon">
-          <img src="/img/weather-icons/wind_spd.svg" width="30" alt>
+          <img src="/img/weather-icons/wind_spd.svg" width="30" alt />
         </span>
         <span class="day-weather__value">{{ Math.round(weather.wind_spd) }} m/s</span>
       </div>
-      <div class="day-weather__item">
+      <div class="day-weather__item" v-tooltip.top-center="{content: 'Clouds'}">
         <span class="day-weather__icon">
-          <img src="/img/weather-icons/clouds.svg" width="30" alt>
+          <img src="/img/weather-icons/clouds.svg" width="30" alt />
         </span>
         <span class="day-weather__value">{{ weather.clouds }}%</span>
       </div>
-      <div class="day-weather__item">
+      <div class="day-weather__item" v-tooltip.top-center="{content: 'Wind Direction'}">
         <span class="day-weather__icon">
-          <img src="/img/weather-icons/wind_dir.svg" width="30" alt>
+          <img src="/img/weather-icons/wind_dir.svg" width="30" alt />
         </span>
         <span class="day-weather__value">{{ weather.wind_cdir }}</span>
       </div>
     </div>
-    <span class="day-weather__temperature">{{ Math.round(weather.temp) }}</span>
+    <span class="day-weather__temperature">{{ weather.temp }}</span>
     <span class="day-weather__description">{{ weather.weather.description }}</span>
     <div class="day-weather__indicators">
-      <div class="day-weather__item">
+      <div class="day-weather__item" v-tooltip.top-center="{content: 'Sunrise'}">
         <span class="day-weather__icon">
-          <img src="/img/weather-icons/sunrise.svg" width="30" alt>
+          <img src="/img/weather-icons/sunrise.svg" width="30" alt />
         </span>
         <span class="day-weather__value">{{ formatedSunriseTime }}</span>
       </div>
 
-      <div class="day-weather__item">
+      <div class="day-weather__item" v-tooltip.top-center="{content: 'Sunset'}">
         <span class="day-weather__icon">
-          <img src="/img/weather-icons/sunset.svg" width="30" alt>
+          <img src="/img/weather-icons/sunset.svg" width="30" alt />
         </span>
         <span class="day-weather__value">{{ formatedSunsetTime }}</span>
       </div>
@@ -136,5 +136,8 @@ export default {
 .day-weather__description {
   font-size: 1.5em;
   margin-bottom: 0.5em;
+}
+.day-weather__value {
+  cursor: help;
 }
 </style>
