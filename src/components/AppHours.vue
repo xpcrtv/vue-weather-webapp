@@ -44,17 +44,22 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({
-      hoursData: 'getEvenHoursForecast',
-      hoursTemp: 'getHoursTemp',
-    }),
     isDraggable() {
       return window.matchMedia('(min-width: 768px)').matches;
     },
-  },
-  methods: {
-    formatedDay(value) {
-      return dayjs(value * 1000).format('HH:mm');
+    evenHoursForecast() {
+      return this.$store.state.hourly.filter((_, index) => index % 2 === 0);
+    },
+    hoursData() {
+      return this.evenHoursForecast.map((hourItem) => {
+        const { ts } = hourItem;
+        const dateOffset = 1000;
+        const formatedTime = dateService.formatDate(ts * dateOffset, 'HH:mm');
+        return Object.assign({}, hourItem, { ts: formatedTime });
+      });
+    },
+    hoursTemp() {
+      return this.evenHoursForecast.map((hour) => hour.temp);
     },
   },
 };

@@ -1,18 +1,17 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
-import getCurrentPosition from './utils/getCurrentPosition';
-import buildQueries from './utils/buildQueries';
+import Forecast from './services/forecast';
+import Location from './services/location';
 
+const location = new Location();
+const forecastApi = new Forecast();
 
 Vue.use(Vuex);
 
-const baseUrl = process.env.VUE_APP_WEATHER_API_URL;
-const baseGeoUrl = process.env.VUE_APP_GEO_API_URL;
-const apiKey = process.env.VUE_APP_WEATHER_API;
-
 export default new Vuex.Store({
   state: {
+    loading: true,
     errorState: false,
     errorMessage: '',
     updateTime: 0,
@@ -20,10 +19,12 @@ export default new Vuex.Store({
       latitude: 0,
       longitude: 0,
     },
-    hourly: [{
-      ts: 0,
-      temp: 0,
-    }],
+    hourly: [
+      {
+        ts: 0,
+        temp: 0,
+      },
+    ],
     current: {
       city_name: '',
       wind_spd: 0,
@@ -36,18 +37,19 @@ export default new Vuex.Store({
         description: '',
       },
     },
-    weekly: [{
-      ts: 0,
-      sunrise_ts: 0,
-      sunset_ts: 0,
-      wind_spd: 0,
-      pop: 0,
-      max_temp: 0,
-      min_temp: 0,
-      weather: {
-        icon: '',
+    weekly: [
+      {
+        ts: 0,
+        sunrise_ts: 0,
+        sunset_ts: 0,
+        wind_spd: 0,
+        pop: 0,
+        max_temp: 0,
+        min_temp: 0,
+        weather: {
+          icon: 'c01d',
+        },
       },
-    },
     ],
   },
   mutations: {
@@ -66,121 +68,49 @@ export default new Vuex.Store({
     updateHourlyForecast(state, forecast) {
       state.hourly = forecast;
     },
-    setErrorState(state, bool) {
-      state.errorState = bool;
+    setErrorState(state, boolean) {
+      state.errorState = boolean;
     },
     setErrorMessage(state, message) {
       state.errorMessage = message;
     },
+    setLoadingState(state, boolean) {
+      state.loading = boolean;
+    },
   },
   actions: {
-    initState({ dispatch }) {
+    async initState({ dispatch, commit }) {
+      commit('setErrorState', false);
+      commit('setErrorMessage', '');
       const storageData = JSON.parse(localStorage.getItem('vuex'));
       if (!storageData || storageData.updateTime === 0) {
-        dispatch('updateForecastByIpCoords');
+        commit('updateCoords', await location.getLocationByIp());
+        dispatch('updateForecast');
+        dispatch('updateTime');
       }
     },
-    updateTime({ commit }) {
-      const currentTime = new Date().getTime();
-      commit('updateTime', currentTime);
+    updateTime({ state, commit }) {
+      if (state.errorState === false) {
+        const currentTime = new Date().getTime();
+        commit('updateTime', currentTime);
+      }
     },
-    updateForecastByIpCoords({ dispatch, commit }) {
-      axios.get(baseGeoUrl)
-        .then((res) => {
-          const { data } = res;
-          const coords = {
-            latitude: Number(data.latitude),
-            longitude: Number(data.longitude),
-          };
-          commit('updateCoords', coords);
-        })
-        .then(() => {
-          dispatch('updateForecast');
-          dispatch('updateTime');
-        }).catch((err) => {
-          commit('setErrorState', true);
-          commit('setErrorMessage', err.message);
-        });
+    async updateCoordsByDevice({ commit }) {
+      commit('updateCoords', await location.getLocationByDevice());
     },
-    updateForecastByDeviceCoords({ commit, dispatch }) {
-      getCurrentPosition().then((res) => {
-        const { coords } = res;
-        const coordinates = {
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        };
-        commit('updateCoords', coordinates);
-      })
-        .then(() => {
-          dispatch('updateForecast');
-          dispatch('updateTime');
-        })
-        .catch((err) => {
-          commit('setErrorState', true);
-          commit('setErrorMessage', err.message);
-        });
-    },
-    updateForecast({ dispatch }) {
-      dispatch('updateCurrentForecast');
-      dispatch('updateHourlyForecast');
-      dispatch('updateWeeklyForecast');
-    },
-    updateCurrentForecast({ state, commit }) {
-      const queries = buildQueries({
-        lat: state.coords.latitude.toFixed(2),
-        lon: state.coords.longitude.toFixed(2),
-        key: apiKey,
-      });
-      axios.get(`${baseUrl}/current${queries}`)
-        .then((res) => {
-          const { data } = res.data;
-          commit('updateCurrentForecast', data[0]);
-        }).catch((err) => {
-          commit('setErrorState', true);
-          commit('setErrorMessage', err.message);
-        });
-    },
-    updateWeeklyForecast({ state, commit }) {
-      const queries = buildQueries({
-        lat: state.coords.latitude.toFixed(2),
-        lon: state.coords.longitude.toFixed(2),
-        days: 8,
-        key: apiKey,
-      });
-      axios.get(`${baseUrl}/forecast/daily${queries}`)
-        .then((res) => {
-          const { data } = res.data;
-          commit('updateWeeklyForecast', data.filter((_, i) => i !== 0));
-        }).catch((err) => {
-          commit('setErrorState', true);
-          commit('setErrorMessage', err.message);
-        });
-    },
-    updateHourlyForecast({ state, commit }) {
-      const queries = buildQueries({
-        lat: state.coords.latitude.toFixed(2),
-        lon: state.coords.longitude.toFixed(2),
-        hours: 26,
-        key: apiKey,
-      });
-      axios.get(`${baseUrl}/forecast/hourly${queries}`)
-        .then((res) => {
-          const { data } = res.data;
-          commit('updateHourlyForecast', data);
-        }).catch((err) => {
-          commit('setErrorState', true);
-          commit('setErrorMessage', err.message);
-        });
+    async updateForecast({ state, commit }) {
+      if (state.errorState === false) {
+        commit('setLoadingState', true);
+        commit('updateCurrentForecast', await forecastApi.getCurrentForecast(state.coords));
+        commit('updateWeeklyForecast', await forecastApi.getWeeklyForecast(state.coords));
+        commit('updateHourlyForecast', await forecastApi.getHourlyForecast(state.coords));
+        commit('setLoadingState', false);
+      }
     },
   },
   getters: {
-    getEvenHoursForecast(state) {
+    evenHoursForecast(state) {
       return state.hourly.filter((_, index) => index % 2 === 0);
-    },
-    getHoursTemp(state) {
-      return state.hourly
-        .filter((_, index) => index % 2 === 0)
-        .map((hour) => hour.temp);
     },
   },
   plugins: [createPersistedState()],
