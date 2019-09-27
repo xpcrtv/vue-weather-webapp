@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
 import createPersistedState from 'vuex-persistedstate';
 import getCurrentPosition from './utils/getCurrentPosition';
 import buildQueries from './utils/buildQueries';
